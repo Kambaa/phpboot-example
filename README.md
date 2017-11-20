@@ -1,34 +1,38 @@
 # PhpBoot Example
 
-此示例用于展示 PhpBoot 框架的用法。
+This example shows how to use the PhpBoot framework.
 
-## 下载代码
 
-通过 git clone 或者下载 zip 包, 将 phpboot-example 代码下载到指定目录。
+## Download the code
 
-## 安装
+Download the phpboot-example code to the specified directory by git clone or by downloading the zip package.
 
-在phpboot-example目录下执行以下命令, 安装依赖项。
+
+## installation
+
+Execute the following command in the phpboot-example directory to install the dependencies.
+
 
 ```
 curl -s http://getcomposer.org/installer | php
 composer install
 ```
 
-## 配置 Webserver
+## Webserver Configuration
 
-请参考[配置文档](https://caoym.gitbooks.io/phpboot/content/kuai-su-kai-shi/webserver-pei-zhi.html)配置 Webserver
+Please [refer](https://caoym.gitbooks.io/phpboot/content/kuai-su-kai-shi/webserver-pei-zhi.html) to the configuration document to configure Webserver
+
+## Initialize the database
+
+Run 'init.mysql.sql' to initialize the test database.
 
 
-## 初始化数据库
 
-执行 'init.mysql.sql' 初始化测试数据库。
+## Change setting
 
-## 修改配置
+Modify config.php database configuration
 
-修改 config.php 的数据库等配置
+## test
 
-## 测试
-
-访问 http://your-host/docs/swagger.json, 如果能正常访问, 则前往地址```http://petstore.swagger.io/?url=http://your-host/docs/swagger.json```, 对接口进行测试。
+Visit http: //your-host/docs/swagger.json , if you can access normally, go to the address http://petstore.swagger.io/?url=http://your-host/docs/swagger.json, the interface for testing.
 
