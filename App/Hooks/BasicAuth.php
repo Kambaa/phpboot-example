@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Hooks;
 
 use PhpBoot\Controller\HookInterface;
@@ -24,16 +25,16 @@ class BasicAuth implements HookInterface
         $auth = $request->headers->get('Authorization');
         $auth or \PhpBoot\abort(new UnauthorizedHttpException('Basic realm="PhpBoot Example"', 'Please login...'));
         $auth = explode(' ', $auth);
-        $auth[1] == md5("{$this->username}:{$this->password}") or fail(new UnauthorizedHttpException('Basic realm="PhpBoot Example", "Invalid username or password!"'));
+        $auth[1] == md5("{$this->username}:{$this->password}") or \PhpBoot\abort(new UnauthorizedHttpException('Basic realm="PhpBoot Example", "Invalid username or password!"'));
         return $next($request);
     }
 
     /**
      * @var string
      */
-    public $username;
+    public $username = "123";
     /**
      * @var string
      */
-    public $password;
+    public $password = "123";
 }

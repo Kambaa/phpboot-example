@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Controllers;
+
 use App\Entities\Book;
 use PhpBoot\Application;
 use PhpBoot\DB\DB;
@@ -9,18 +11,18 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * 图书管理
+ * Library management
  *
- * 这是一个示例, 通过实现一套简单的图书管理接口, 展示 PhpBoot 框架的使用方式。
+ * Here's an example of how to use the PhpBoot framework by implementing a simple set of library management interfaces.
  *
  * @path /books
  */
 class Books
 {
-    use EnableDIAnnotations; //启用通过@inject标记注入依赖
+    use EnableDIAnnotations; //Enable injecting dependencies through @inject tags
 
     /**
-     * @param LoggerInterface $logger 通过依赖注入传入
+     * @param LoggerInterface $logger Incoming through dependency injection
      */
     public function __construct(LoggerInterface $logger)
     {
@@ -28,37 +30,36 @@ class Books
     }
 
     /**
-     * 查找图书
+     * Find books
      *
      * @route GET /
      *
-     * @param string $name  查找书名
-     * @param int $offset 结果集偏移 {@v min:0}
-     * @param int $limit 返回结果最大条数 {@v max:1000}
-     * @param int $total 总条数
-     * @throws BadRequestHttpException 参数错误
-     * @return Book[] 图书列表
+     * @param string $name Find the title
+     * @param int $offset Result set offset {@v min:0}
+     * @param int $limit Returns the maximum number of results {@v max:1000}
+     * @param int $total The total number
+     * @throws BadRequestHttpException Parameter error
+     * @return Book[] Book list
      */
-    public function findBooks($name, &$total, $offset=0, $limit=100)
+    public function findBooks($name, &$total, $offset = 0, $limit = 100)
     {
         $query = \PhpBoot\models($this->db, Book::class)
-            ->findWhere(['name'=>['LIKE'=>"%$name%"]]);
+            ->findWhere(['name' => ['LIKE' => "%$name%"]]);
         $total = $query->count();
         return $query->limit($offset, $limit)->get();
     }
 
     /**
-     * 获取图书
+     * Get a book
      *
-     * 获取指定的图书信息
+     * Get the specified book information
      *
      * @route GET /{id}
      *
-     * @param string $id 指定图书编号
-     *
-     * @throws NotFoundHttpException 图书不存在
-     *
-     * @return Book 图书信息
+     * @param string $id Specify the book number
+     * @hook \App\Hooks\BasicAuth
+     * @throws NotFoundHttpException Book does not exist
+     * @return Book Book information
      */
     public function getBook($id)
     {
@@ -68,19 +69,19 @@ class Books
     }
 
     /**
-     * 新建图书
+     * New book
      *
-     * 根据指定信息新建图书
+     * Create a new book based on the specified information
      *
      * @route POST /
-     * @param Book $book {@bind request.request} 这里将post的内容绑定到 book 参数上
+     * @param Book $book {@bind request.request} Here's the content of the post bound to the book parameter
      * @throws BadRequestHttpException
-     * @return string 返回新建图书的编号
+     * @return string Return the number of the new book
      */
     public function createBook(Book $book)
     {
         !$book->id or \PhpBoot\abort(new BadRequestHttpException("should not specify id while creating books"));
-        $this->logger->info("attempt to create book: ".json_encode($book));
+        $this->logger->info("attempt to create book: " . json_encode($book));
 
         \PhpBoot\model($this->db, $book)->create();
 
@@ -89,32 +90,32 @@ class Books
     }
 
     /**
-     * 修改图书
+     * Modify the book
      *
-     * 根据指定信息修改图书
+     * Modify the book based on the specified information
      *
      * @route PUT /
-     * @param Book $book {@bind request.request} 这里将post的内容绑定到 book 参数上
+     * @param Book $book {@bind request.request} Here's the content of the post bound to the book parameter
      * @throws BadRequestHttpException
-     * @return void 成功
+     * @return void success
      */
     public function updateBook(Book $book)
     {
         $book->id or \PhpBoot\abort(new BadRequestHttpException("update {$book->id} failed"));
-        $this->logger->info("attempt to update book: ".json_encode($book));
+        $this->logger->info("attempt to update book: " . json_encode($book));
 
         \PhpBoot\model($this->db, $book)->update();
 
         $this->logger->info("update book {$book->id} OK");
     }
+
     /**
-     * 删除图书
-     *
-     * 删除指定图书
+     * Delete book
+     * Delete the specified book
      *
      * @route DELETE /{id}
      * @param string $id
-     * @throws NotFoundHttpException 指定图书不存在
+     * @throws NotFoundHttpException Specified book does not exist
      * @return void
      */
     public function deleteBook($id)
