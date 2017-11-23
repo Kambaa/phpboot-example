@@ -1,6 +1,7 @@
 <?php
 namespace App\Utils;
 
+use ReflectionClass;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -13,7 +14,7 @@ class ExceptionRenderer
     public function render(\Exception $e)
     {
         $message = json_encode(
-            ['error' => get_class($e), 'message' => $e->getMessage()],
+            ['error' => (new ReflectionClass($e))->getShortName(), 'message' => $e->getMessage()],
             JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
         );
 
